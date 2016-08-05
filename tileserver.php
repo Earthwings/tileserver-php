@@ -342,10 +342,6 @@ class Server {
       $z = floatval($z);
       $y = floatval($y);
       $x = floatval($x);
-      $flip = true;
-      if ($flip) {
-        $y = pow(2, $z) - 1 - $y;
-      }
       $result = $this->db->query('select tile_data as t from tiles where zoom_level=' . $z . ' and tile_column=' . $x . ' and tile_row=' . $y);
       $data = $result->fetchColumn();
       if (!isset($data) || $data === FALSE) {
@@ -452,13 +448,10 @@ class Server {
    * @param integer $y
    * @param integer $x
    */
-  public function renderUTFGrid($tileset, $z, $y, $x, $flip = TRUE) {
+  public function renderUTFGrid($tileset, $z, $y, $x) {
     if ($this->isDBLayer($tileset)) {
       if ($this->isModified($tileset) == TRUE) {
         header('HTTP/1.1 304 Not Modified');
-      }
-      if ($flip) {
-        $y = pow(2, $z) - 1 - $y;
       }
       try {
         $this->DBconnect($tileset . '.mbtiles');

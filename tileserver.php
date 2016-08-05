@@ -9,7 +9,7 @@
 
 global $config;
 $config['serverTitle'] = 'Maps hosted with TileServer-php v2.0';
-$config['availableFormats'] = array('png', 'jpg', 'jpeg', 'gif', 'webp', 'pbf', 'hybrid');
+$config['availableFormats'] = array('png', 'jpg', 'jpeg', 'gif', 'webp', 'pbf', 'o5m', 'hybrid');
 //$config['template'] = 'template.php';
 //$config['baseUrls'] = array('t0.server.com', 't1.server.com');
 
@@ -365,7 +365,10 @@ class Server {
         if ($format == 'pbf') {
           header('Content-type: application/x-protobuf');
           header('Content-Encoding:gzip');
-        } else {
+        } elseif ($format == 'o5m') {
+          // nothing needed here?
+        }
+        else {
           header('Content-type: image/' . $format);
         }
         header('Access-Control-Allow-Origin: *');
@@ -412,6 +415,11 @@ class Server {
   public function getCleanTile($scale = 1, $format = 'png') {
     switch ($format) {
       case 'pbf':
+        header('HTTP/1.1 404 Not Found');
+        header('Content-Type: application/json; charset=utf-8');
+        echo '{"message":"Tile does not exist"}';
+        break;
+      case 'o5m':
         header('HTTP/1.1 404 Not Found');
         header('Content-Type: application/json; charset=utf-8');
         echo '{"message":"Tile does not exist"}';

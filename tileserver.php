@@ -362,7 +362,9 @@ class Server {
           header('Content-type: application/x-protobuf');
           header('Content-Encoding:gzip');
         } elseif ($format == 'o5m') {
-          // nothing needed here?
+          header('Content-Type: application/octet-stream');
+          header('Content-Transfer-Encoding: binary');
+          header('Content-Length: ' . strlen($data));
         }
         else {
           header('Content-type: image/' . $format);
